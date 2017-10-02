@@ -1,0 +1,17 @@
+http://practicalcryptography.com/cryptanalysis/letter-frequencies-various-languages/english-letter-frequencies/.
+
+http://crypto.interactive-maths.com/frequency-analysis-breaking-the-code.html
+
+http://www.prooffreader.com/2014/09/how-often-does-given-letter-follow.html
+
+h generally between t and e
+
+u usually after q
+
+prefixes 
+
+postfixes
+
+The most common repeated letters in normal English are ss, ee, tt, ff, ll, mm, oo.
+
+https://www.logicofenglish.com/spelling-lists/by-phonogram
