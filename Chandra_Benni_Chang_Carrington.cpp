@@ -35,7 +35,7 @@ bool checkFirstPT(vector<int> tokens)
 				
 				
 				//condition of q is that should occur only once
-				if( countVal(tokens, tokens[215]) == 1)
+				if(1)
 				{
 					//condition for v is it should occour at 215
 					
@@ -65,30 +65,31 @@ bool checkSecondPT(vector<int> tokens)
 			return 0;
 	}
 	if( countVal(tokens, idxB) == 16)
-	
 	{
 		//condition of k is it should occour at 404,462
 		int idxK = tokens[404];
 		if(idxK == tokens[462] &&  countVal(tokens, idxK) == 2)
 		{
 			
-			//condtion of q is that it should occur 21,79,32,82,138,148,335,453
+			//condtion of q is that it should occur 21,79
 			int idxQ = tokens[21];
-			int idxArrQ[] = {79,32,82,138,148,335,453};
-			for(int i=0;i<sizeof(idxArrQ)/sizeof(idxArrQ[0]);i++)
-			{
-				if(!(idxQ == idxArrQ[i]))
-					return 0;
-			}
-			if( countVal(tokens, idxQ) == 8)
+			if (idxQ == tokens[79] && countVal(tokens, idxK) == 2)
 			{
 				//condtion of v is it should occur at 6 times --> CHANGE IT
-				if(tokens[128] == tokens[478] &&  countVal(tokens, tokens[128]) == 6)
+				int idxArrV[] = {82, 138, 148, 335, 453};
+				int idxV = tokens[32];
+				for (int i = 0; i<sizeof(idxArrV) / sizeof(idxArrV[0]); i++)
+				{
+					if (!(idxV == tokens[i]))
+						return 0;
+				}
+				if (countVal(tokens, idxV) == 6)
 				{
 					//condition of x is it should occur 442
 					
 					if(  countVal(tokens, tokens[442]) == 1)
 					{
+						//condition of z is it should occur 360
 						if( countVal(tokens, tokens[360]) == 1)
 							return 1;
 					}
@@ -96,6 +97,157 @@ bool checkSecondPT(vector<int> tokens)
 				}
 			}
 			
+		}
+	}
+	return 0;
+}
+
+
+bool checkThirdPT(vector<int> tokens)
+{
+	//condition of b are it should occur on 150, 211, 218, 226, 240, 332, 375, 393, 466
+	int idxArrB[] = {211, 218, 226, 240, 332, 375, 393, 466};
+	int idxB = tokens[150];
+	for (int i = 0; i<sizeof(idxArrB) / sizeof(idxArrB[0]); i++)
+	{
+		if (!(idxB == tokens[i]))
+			return 0;
+	}
+	if (countVal(tokens, idxB) == 9)
+	{
+		//condition of k is it should occour at 111, 214, 331, 456
+		int idxK = tokens[214, 331, 456];
+		if (idxK == tokens[111] && countVal(tokens, idxK) == 4)
+		{
+
+			//condtion of j is that it should occur 177
+			if (countVal(tokens, tokens[177]) == 1)
+			{
+				//condtion of v is it should occur at 17, 81, 143, 233, 280, 369 
+				int idxArrV[] = { 81, 143, 233, 280, 369 };
+				int idxV = tokens[17];
+				for (int i = 0; i<sizeof(idxArrV) / sizeof(idxArrV[0]); i++)
+				{
+					if (!(idxV == tokens[i]))
+						return 0;
+				}
+				if (countVal(tokens, idxV) == 6)
+				{
+					//condition of x is it should never occur
+
+					if (1)
+					{
+						//condition of z is it should occur 255, 266, 311, 415
+						int idxZ = tokens[255];
+						if (idxZ == tokens[266] && idxZ == tokens[311] && idxZ == tokens[415] && countVal(tokens, idxZ) == 4)
+							return 1;
+					}
+
+				}
+			}
+
+		}
+	}
+	return 0;
+}
+
+bool checkFourthPT(vector<int> tokens)
+{
+	//condition of b are it should occur on 15, 46, 116, 156, 247, 345, 380, 386, 387, 479
+	int idxArrB[] = { 46, 116, 156, 247, 345, 380, 386, 387, 479 };
+	int idxB = tokens[15];
+	for (int i = 0; i<sizeof(idxArrB) / sizeof(idxArrB[0]); i++)
+	{
+		if (!(idxB == tokens[i]))
+			return 0;
+	}
+	if (countVal(tokens, idxB) == 10)
+	{
+		//condition of k is it should occour at 18, 407, 482, 489
+		int idxK = tokens[407, 482, 489];
+		if (idxK == tokens[18] && countVal(tokens, idxK) == 4)
+		{
+
+			//condtion of q is that it should never occur
+			if (1)
+			{
+				//condtion of v is it should occur at 17, 81, 143, 233, 280, 369
+				int idxArrV[] = { 81, 143, 233, 280, 369 };
+				int idxV = tokens[17];
+				for (int i = 0; i<sizeof(idxArrV) / sizeof(idxArrV[0]); i++)
+				{
+					if (!(idxV == tokens[i]))
+						return 0;
+				}
+				if (countVal(tokens, idxV) == 6)
+				{
+					//condition of j is it should occur 282
+
+					if (countVal(tokens, tokens[282]) == 1)
+					{
+						//condition of z is it should occur 64, 67, 148, 369, 447
+						int idxArrZ[] = { 67, 148, 369, 447 };
+						int idxZ = tokens[64];
+						for (int i = 0; i<sizeof(idxArrZ) / sizeof(idxArrZ[0]); i++)
+						{
+							if (!(idxZ == tokens[i]))
+								return 0;
+						}
+						if (countVal(tokens, idxZ) == 5)
+							return 1;
+					}
+
+				}
+			}
+
+		}
+	}
+	return 0;
+}
+
+bool checkFifthPT(vector<int> tokens)
+{
+	//condition of b are it should occur on 110, 131, 149, 260, 291, 378, 448, 468, 498
+	int idxArrB[] = { 131, 149, 260, 291, 378, 448, 468, 498 };
+	int idxB = tokens[110];
+	for (int i = 0; i<sizeof(idxArrB) / sizeof(idxArrB[0]); i++)
+	{
+		if (!(idxB == tokens[i]))
+			return 0;
+	}
+	if (countVal(tokens, idxB) == 9)
+	{
+		//condition of k is it should occour at 349, 400
+		int idxK = tokens[400];
+		if (idxK == tokens[349] && countVal(tokens, idxK) == 2)
+		{
+
+			//condtion of q is that it should occur 191
+			if (countVal(tokens, tokens[191]) == 1)
+			{
+				//condtion of v is it should occur at 332, 441
+				int idxArrV[] = { 441 };
+				int idxV = tokens[332];
+				for (int i = 0; i<sizeof(idxArrV) / sizeof(idxArrV[0]); i++)
+				{
+					if (!(idxV == tokens[i]))
+						return 0;
+				}
+				if (countVal(tokens, idxV) == 2)
+				{
+					//condition of j is it should occur 176
+
+					if (countVal(tokens, tokens[176]) == 1)
+					{
+						//condition of z is it should occur 332, 458
+						int idxZ = tokens[332];
+						if (idxZ == tokens[458] && countVal(tokens, idxZ) == 2)
+							return 1;
+					}
+
+				}
+			}
+
 		}
 	}
 	return 0;
