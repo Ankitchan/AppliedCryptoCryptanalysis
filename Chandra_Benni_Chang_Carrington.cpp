@@ -426,7 +426,7 @@ int guessPlainTextTwo(string ct)
 				tokens[*(iter + 8)].setLetter('s');
 
 
-				for (int j = -3; j < 10; ++j) {
+				for (int j = -3; j < 9; ++j) {
 					//keyToLetter[tokens[*(iter + j)].getNum()] = tokens[*(iter + j)].getLetter();
 					Key* keyPointer = &tokens[*(iter + j)];
 					vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
@@ -438,21 +438,18 @@ int guessPlainTextTwo(string ct)
 			}
 
 			// Set 'briskly' in ciphertext
-			vector<Key>::iterator important_pointer;
 			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
-				if (iter->getNum() == *i && !(iter->getUsed())) {
-					tokens[iter->getNum()].setLetter('b');
-					tokens[(iter + 1)->getNum()].setLetter('r');
-					tokens[(iter + 2)->getNum()].setLetter('i');
-					tokens[(iter + 3)->getNum()].setLetter('s');
-					tokens[(iter + 4)->getNum()].setLetter('k');
-					tokens[(iter + 5)->getNum()].setLetter('i');
-					tokens[(iter + 6)->getNum()].setLetter('n');
-					tokens[(iter + 7)->getNum()].setLetter('g');
+				if ((iter - 7)->getNum() == *i && !(iter->getUsed())) {
+					tokens[(iter - 8)->getNum()].setLetter('b');
+					tokens[(iter - 7)->getNum()].setLetter('r');
+					tokens[(iter - 6)->getNum()].setLetter('i');
+					tokens[(iter - 5)->getNum()].setLetter('s');
+					tokens[(iter - 4)->getNum()].setLetter('k');
+					tokens[(iter - 3)->getNum()].setLetter('i');
+					tokens[(iter - 2)->getNum()].setLetter('n');
+					tokens[(iter - 1)->getNum()].setLetter('g');
 
-					important_pointer = iter + 4;
-
-					for (int j = -1; j < 9; ++j) {
+					for (int j = -9; j < 1; ++j) {
 						//if (keyToLetter[(iter + j)->getNum()] == ' ')
 						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
 						Key* keyPointer = &(*(iter + j));
@@ -465,15 +462,15 @@ int guessPlainTextTwo(string ct)
 			}
 
 			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
-				if (iter->getNum() == important_pointer->getNum() && !(iter->getUsed())) {
-					tokens[(iter - 3)->getNum()].setLetter('r');
-					tokens[(iter - 2)->getNum()].setLetter('a');
-					tokens[(iter - 1)->getNum()].setLetter('n');
-					tokens[(iter)->getNum()].setLetter('k');
-					tokens[(iter + 1)->getNum()].setLetter('l');
-					tokens[(iter + 2)->getNum()].setLetter('y');
+				if ((iter - 2)->getNum() == letterToKey['k'][0] && !(iter->getUsed())) {
+					tokens[(iter - 6)->getNum()].setLetter('r');
+					tokens[(iter - 5)->getNum()].setLetter('a');
+					tokens[(iter - 4)->getNum()].setLetter('n');
+					tokens[(iter - 3)->getNum()].setLetter('k');
+					tokens[(iter - 2)->getNum()].setLetter('l');
+					tokens[(iter - 1)->getNum()].setLetter('y');
 
-					for (int j = -4; j < 4; ++j) {
+					for (int j = -7; j < 1; ++j) {
 						//if (keyToLetter[(iter + j)->getNum()] != ' ')
 						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
 						Key* keyPointer = &(*(iter + j));
@@ -486,122 +483,93 @@ int guessPlainTextTwo(string ct)
 			}
 
 			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
-				if ((iter->getNum() == letterToKey['g'][0] || (iter->getNum() == letterToKey['g'][1])) && !(iter->getUsed())) { // RISK
-					tokens[(iter - 4)->getNum()].setLetter('e');
-					tokens[(iter - 3)->getNum()].setLetter('n');
-					tokens[(iter - 2)->getNum()].setLetter('e');
-					tokens[(iter - 1)->getNum()].setLetter('r');
-					tokens[(iter)->getNum()].setLetter('g');
-					tokens[(iter + 1)->getNum()].setLetter('i');
-					tokens[(iter + 2)->getNum()].setLetter('z');
-					tokens[(iter + 3)->getNum()].setLetter('e');
-
-					for (int j = -5; j < 5; ++j) {
-						//if (keyToLetter[(iter + j)->getNum()] != ' ')
-						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
-						Key* keyPointer = &(*(iter + j));
-						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
-						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
-							keys_of_letter->push_back(keyPointer->getNum());
-						keyPointer->setUsed(true);
-					}
-				}
-			}
-
-			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
-				if ((iter->getNum() == letterToKey['y'][0] || (iter->getNum() == letterToKey['y'][1])) && !(iter->getUsed())) { //RISK
-					tokens[(iter - 1)->getNum()].setLetter('n');
-					tokens[(iter)->getNum()].setLetter('y');
-					tokens[(iter + 1)->getNum()].setLetter('m');
-					tokens[(iter + 2)->getNum()].setLetter('p');
-					tokens[(iter + 3)->getNum()].setLetter('h');
-					tokens[(iter + 4)->getNum()].setLetter('a');
-					tokens[(iter + 5)->getNum()].setLetter('l');
-
-					for (int j = -2; j < 7; ++j) {
-						//if (keyToLetter[(iter + j)->getNum()] != ' ')
-						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
-						Key* keyPointer = &(*(iter + j));
-						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
-						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
-							keys_of_letter->push_back(keyPointer->getNum());
-						keyPointer->setUsed(true);
-					}
-				}
-			}
-
-			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
-				if ((iter->getNum() == letterToKey['p'][0] || (iter->getNum() == letterToKey['p'][1])) && 
-					((iter+4)->getNum() == letterToKey['g'][0] || ((iter+4)->getNum() == letterToKey['g'][1])) &&
-					!(iter->getUsed())) { //RISK
-
-					tokens[(iter - 3)->getNum()].setLetter('s');
-					tokens[(iter - 2)->getNum()].setLetter('a');
-					tokens[(iter - 1)->getNum()].setLetter('m');
-					tokens[(iter)->getNum()].setLetter('p');
-					tokens[(iter + 1)->getNum()].setLetter('l');
-					tokens[(iter + 2)->getNum()].setLetter('i');
-					tokens[(iter + 3)->getNum()].setLetter('n');
-					tokens[(iter + 4)->getNum()].setLetter('g');
-
-					for (int j = -4; j < 6; ++j) {
-						//if (keyToLetter[(iter + j)->getNum()] != ' ')
-						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
-						Key* keyPointer = &(*(iter + j));
-						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
-						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
-							keys_of_letter->push_back(keyPointer->getNum());
-						keyPointer->setUsed(true);
-					}
-				}
-			}
-
-			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
-				if ((iter->getNum() == letterToKey['p'][0] || (iter->getNum() == letterToKey['p'][1])) &&
-					((iter + 2)->getNum() == letterToKey['p'][0] || ((iter + 2)->getNum() == letterToKey['p'][1])) &&
-					!(iter->getUsed())) { //RISK
-
-					tokens[(iter - 3)->getNum()].setLetter('s');
-					tokens[(iter - 2)->getNum()].setLetter('t');
-					tokens[(iter - 1)->getNum()].setLetter('o');
-					tokens[(iter)->getNum()].setLetter('v');
-					tokens[(iter + 1)->getNum()].setLetter('e');
-					tokens[(iter + 2)->getNum()].setLetter('p');
-					tokens[(iter + 3)->getNum()].setLetter('i');
-					tokens[(iter + 4)->getNum()].setLetter('p');
-					tokens[(iter + 4)->getNum()].setLetter('e');
-					tokens[(iter + 5)->getNum()].setLetter('s');
-
-					for (int j = -4; j < 7; ++j) {
-						//if (keyToLetter[(iter + j)->getNum()] != ' ')
-						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
-						Key* keyPointer = &(*(iter + j));
-						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
-						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
-							keys_of_letter->push_back(keyPointer->getNum());
-						keyPointer->setUsed(true);
-					}
-				}
-			}
-
-			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
-				if (((iter-10)->getNum() == letterToKey['m'][0] || ((iter-10)->getNum() == letterToKey['m'][1])) &&
-					((iter-4)->getNum() == letterToKey['g'][0] || ((iter-4)->getNum() == letterToKey['g'][1])) &&
-					!(iter->getUsed())) {
-
-					tokens[(iter - 10)->getNum()].setLetter('m');
-					tokens[(iter - 9)->getNum()].setLetter('e');
-					tokens[(iter - 8)->getNum()].setLetter('a');
+				if (((iter - 4)->getNum() == letterToKey['g'][0] || ((iter - 4)->getNum() == letterToKey['g'][1])) && !(iter->getUsed())) { // RISK
+					tokens[(iter - 8)->getNum()].setLetter('e');
 					tokens[(iter - 7)->getNum()].setLetter('n');
-					tokens[(iter - 6)->getNum()].setLetter('i');
-					tokens[(iter - 5)->getNum()].setLetter('n');
+					tokens[(iter - 6)->getNum()].setLetter('e');
+					tokens[(iter - 5)->getNum()].setLetter('r');
 					tokens[(iter - 4)->getNum()].setLetter('g');
-					tokens[(iter - 3)->getNum()].setLetter('l');
+					tokens[(iter - 3)->getNum()].setLetter('i');
+					tokens[(iter - 2)->getNum()].setLetter('z');
+					tokens[(iter - 1)->getNum()].setLetter('e');
+
+					for (int j = -9; j < 1; ++j) {
+						//if (keyToLetter[(iter + j)->getNum()] != ' ')
+						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+						Key* keyPointer = &(*(iter + j));
+						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+							keys_of_letter->push_back(keyPointer->getNum());
+						keyPointer->setUsed(true);
+					}
+				}
+			}
+
+			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
+				if (((iter - 6)->getNum() == letterToKey['y'][0] || ((iter - 6)->getNum() == letterToKey['y'][1])) && !(iter->getUsed())) { //RISK
+					tokens[(iter - 7)->getNum()].setLetter('n');
+					tokens[(iter - 6)->getNum()].setLetter('y');
+					tokens[(iter - 5)->getNum()].setLetter('m');
+					tokens[(iter - 4)->getNum()].setLetter('p');
+					tokens[(iter - 3)->getNum()].setLetter('h');
+					tokens[(iter - 2)->getNum()].setLetter('a');
+					tokens[(iter - 1)->getNum()].setLetter('l');
+
+					for (int j = -8; j < 1; ++j) {
+						//if (keyToLetter[(iter + j)->getNum()] != ' ')
+						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+						Key* keyPointer = &(*(iter + j));
+						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+							keys_of_letter->push_back(keyPointer->getNum());
+						keyPointer->setUsed(true);
+					}
+				}
+			}
+
+			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
+				if (((iter - 5)->getNum() == letterToKey['p'][0] || ((iter - 5)->getNum() == letterToKey['p'][1])) &&
+					((iter - 1)->getNum() == letterToKey['g'][0] || ((iter - 1)->getNum() == letterToKey['g'][1])) &&
+					!(iter->getUsed())) { //RISK
+
+					tokens[(iter - 8)->getNum()].setLetter('s');
+					tokens[(iter - 7)->getNum()].setLetter('a');
+					tokens[(iter - 6)->getNum()].setLetter('m');
+					tokens[(iter - 5)->getNum()].setLetter('p');
+					tokens[(iter - 4)->getNum()].setLetter('l');
+					tokens[(iter - 3)->getNum()].setLetter('i');
+					tokens[(iter - 2)->getNum()].setLetter('n');
+					tokens[(iter - 1)->getNum()].setLetter('g');
+
+					for (int j = -9; j < 1; ++j) {
+						//if (keyToLetter[(iter + j)->getNum()] != ' ')
+						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+						Key* keyPointer = &(*(iter + j));
+						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+							keys_of_letter->push_back(keyPointer->getNum());
+						keyPointer->setUsed(true);
+					}
+				}
+			}
+
+			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
+				if (((iter - 5)->getNum() == letterToKey['p'][0] || ((iter - 5)->getNum() == letterToKey['p'][1])) &&
+					((iter - 3)->getNum() == letterToKey['p'][0] || ((iter - 3)->getNum() == letterToKey['p'][1])) &&
+					!(iter->getUsed())) { //RISK
+
+					tokens[(iter - 10)->getNum()].setLetter('s');
+					tokens[(iter - 9)->getNum()].setLetter('t');
+					tokens[(iter - 8)->getNum()].setLetter('o');
+					tokens[(iter - 7)->getNum()].setLetter('v');
+					tokens[(iter - 6)->getNum()].setLetter('e');
+					tokens[(iter - 5)->getNum()].setLetter('p');
+					tokens[(iter - 4)->getNum()].setLetter('i');
+					tokens[(iter - 3)->getNum()].setLetter('p');
 					tokens[(iter - 2)->getNum()].setLetter('e');
 					tokens[(iter - 1)->getNum()].setLetter('s');
-					tokens[(iter)->getNum()].setLetter('s');
 
-					for (int j = -4; j < 7; ++j) {
+					for (int j = -11; j < 1; ++j) {
 						//if (keyToLetter[(iter + j)->getNum()] != ' ')
 						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
 						Key* keyPointer = &(*(iter + j));
@@ -611,6 +579,169 @@ int guessPlainTextTwo(string ct)
 						keyPointer->setUsed(true);
 					}
 				}
+			}
+
+			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
+				if (((iter-11)->getNum() == letterToKey['m'][0] || ((iter-11)->getNum() == letterToKey['m'][1])) &&
+					((iter-5)->getNum() == letterToKey['g'][0] || ((iter-5)->getNum() == letterToKey['g'][1])) &&
+					!(iter->getUsed())) {
+
+					tokens[(iter - 11)->getNum()].setLetter('m');
+					tokens[(iter - 10)->getNum()].setLetter('e');
+					tokens[(iter - 9)->getNum()].setLetter('a');
+					tokens[(iter - 8)->getNum()].setLetter('n');
+					tokens[(iter - 7)->getNum()].setLetter('i');
+					tokens[(iter - 6)->getNum()].setLetter('n');
+					tokens[(iter - 5)->getNum()].setLetter('g');
+					tokens[(iter - 4)->getNum()].setLetter('l');
+					tokens[(iter - 3)->getNum()].setLetter('e');
+					tokens[(iter - 2)->getNum()].setLetter('s');
+					tokens[(iter - 1)->getNum()].setLetter('s');
+
+					for (int j = -12; j < 1; ++j) {
+						//if (keyToLetter[(iter + j)->getNum()] != ' ')
+						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+						Key* keyPointer = &(*(iter + j));
+						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+							keys_of_letter->push_back(keyPointer->getNum());
+						keyPointer->setUsed(true);
+					}
+				}
+			}
+
+			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
+				if (((iter - 3)->getNum() == letterToKey['l'][0] || ((iter - 3)->getNum() == letterToKey['l'][1]) || ((iter - 3)->getNum() == letterToKey['l'][2])) &&
+					((iter - 2)->getNum() == letterToKey['l'][0] || ((iter - 2)->getNum() == letterToKey['l'][1]) || ((iter - 2)->getNum() == letterToKey['l'][2])) &&
+					!(iter->getUsed())) {
+
+					tokens[(iter - 6)->getNum()].setLetter('s');
+					tokens[(iter - 5)->getNum()].setLetter('w');
+					tokens[(iter - 4)->getNum()].setLetter('e');
+					tokens[(iter - 3)->getNum()].setLetter('l');
+					tokens[(iter - 2)->getNum()].setLetter('l');
+					tokens[(iter - 1)->getNum()].setLetter('s');
+
+					for (int j = -7; j < 1; ++j) {
+						//if (keyToLetter[(iter + j)->getNum()] != ' ')
+						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+						Key* keyPointer = &(*(iter + j));
+						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+							keys_of_letter->push_back(keyPointer->getNum());
+						keyPointer->setUsed(true);
+					}
+				}
+			}
+
+			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
+				if (((iter - 6)->getNum() == letterToKey['l'][0] || ((iter - 6)->getNum() == letterToKey['l'][1]) || ((iter - 6)->getNum() == letterToKey['l'][2])) &&
+					(((iter - 1))->getNum() == letterToKey['s'][0] || (((iter - 1))->getNum() == letterToKey['l'][1]) || (((iter - 1))->getNum() == letterToKey['s'][2]) || (((iter - 1))->getNum() == letterToKey['s'][3]) || (((iter - 1))->getNum() == letterToKey['s'][4])) &&
+					!(iter->getUsed())) {
+
+					tokens[(iter - 9)->getNum()].setLetter('v');
+					tokens[(iter - 8)->getNum()].setLetter('i');
+					tokens[(iter - 7)->getNum()].setLetter('o');
+					tokens[(iter - 6)->getNum()].setLetter('l');
+					tokens[(iter - 5)->getNum()].setLetter('a');
+					tokens[(iter - 4)->getNum()].setLetter('t');
+					tokens[(iter - 3)->getNum()].setLetter('o');
+					tokens[(iter - 2)->getNum()].setLetter('r');
+					tokens[(iter - 1)->getNum()].setLetter('s');
+
+					for (int j = -10; j < 1; ++j) {
+						//if (keyToLetter[(iter + j)->getNum()] != ' ')
+						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+						Key* keyPointer = &(*(iter + j));
+						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+							keys_of_letter->push_back(keyPointer->getNum());
+						keyPointer->setUsed(true);
+					}
+				}
+			}
+
+			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
+				if (((iter - 7)->getNum() == letterToKey['v'][0]) &&
+					((iter - 5)->getNum() == letterToKey['s'][0] || ((iter - 5)->getNum() == letterToKey['l'][1]) || ((iter - 5)->getNum() == letterToKey['s'][2]) || ((iter - 5)->getNum() == letterToKey['s'][3]) || ((iter - 5)->getNum() == letterToKey['s'][4])) &&
+					!(iter->getUsed())) {
+
+					tokens[(iter - 10)->getNum()].setLetter('t');
+					tokens[(iter - 9)->getNum()].setLetter('r');
+					tokens[(iter - 8)->getNum()].setLetter('a');
+					tokens[(iter - 7)->getNum()].setLetter('v');
+					tokens[(iter - 6)->getNum()].setLetter('e');
+					tokens[(iter - 5)->getNum()].setLetter('s');
+					tokens[(iter - 4)->getNum()].setLetter('t');
+					tokens[(iter - 3)->getNum()].setLetter('i');
+					tokens[(iter - 2)->getNum()].setLetter('e');
+					tokens[(iter - 1)->getNum()].setLetter('d');
+
+					for (int j = -11; j < 1; ++j) {
+						//if (keyToLetter[(iter + j)->getNum()] != ' ')
+						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+						Key* keyPointer = &(*(iter + j));
+						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+							keys_of_letter->push_back(keyPointer->getNum());
+						keyPointer->setUsed(true);
+					}
+				}
+			}
+
+			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
+				if (((iter - 2)->getNum() == letterToKey['l'][0]) || ((iter - 2)->getNum() == letterToKey['l'][1]) || ((iter - 2)->getNum() == letterToKey['l'][2]) &&
+					((iter - 5)->getNum() == letterToKey['i'][0] || ((iter - 5)->getNum() == letterToKey['i'][1]) || ((iter - 5)->getNum() == letterToKey['i'][2]) || ((iter - 5)->getNum() == letterToKey['i'][3]) || ((iter - 5)->getNum() == letterToKey['i'][4]) || ((iter - 5)->getNum() == letterToKey['i'][5])) &&
+					!(iter->getUsed())) {
+
+					tokens[(iter - 6)->getNum()].setLetter('f');
+					tokens[(iter - 5)->getNum()].setLetter('i');
+					tokens[(iter - 4)->getNum()].setLetter('n');
+					tokens[(iter - 3)->getNum()].setLetter('a');
+					tokens[(iter - 2)->getNum()].setLetter('l');
+					tokens[(iter - 1)->getNum()].setLetter('e');
+
+					for (int j = -7; j < 1; ++j) {
+						//if (keyToLetter[(iter + j)->getNum()] != ' ')
+						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+						Key* keyPointer = &(*(iter + j));
+						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+							keys_of_letter->push_back(keyPointer->getNum());
+						keyPointer->setUsed(true);
+					}
+				}
+			}
+
+			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
+				if (((iter - 2)->getNum() == letterToKey['l'][0]) || ((iter - 2)->getNum() == letterToKey['l'][1]) || ((iter - 2)->getNum() == letterToKey['l'][2]) &&
+					((iter - 5)->getNum() == letterToKey['i'][0] || ((iter - 5)->getNum() == letterToKey['i'][1]) || ((iter - 5)->getNum() == letterToKey['i'][2]) || ((iter - 5)->getNum() == letterToKey['i'][3]) || ((iter - 5)->getNum() == letterToKey['i'][4]) || ((iter - 5)->getNum() == letterToKey['i'][5])) &&
+					!(iter->getUsed())) {
+
+					tokens[(iter - 8)->getNum()].setLetter('d');
+					tokens[(iter - 7)->getNum()].setLetter('e');
+					tokens[(iter - 6)->getNum()].setLetter('x');
+					tokens[(iter - 5)->getNum()].setLetter('t');
+					tokens[(iter - 4)->getNum()].setLetter('r');
+					tokens[(iter - 3)->getNum()].setLetter('i');
+					tokens[(iter - 2)->getNum()].setLetter('n');
+					tokens[(iter - 1)->getNum()].setLetter('s');
+
+					for (int j = -9; j < 1; ++j) {
+						//if (keyToLetter[(iter + j)->getNum()] != ' ')
+						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+						Key* keyPointer = &(*(iter + j));
+						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+							keys_of_letter->push_back(keyPointer->getNum());
+						keyPointer->setUsed(true);
+					}
+				}
+			}
+
+			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
+				for (vector<Key>::iterator iter2 = iter; iter2 < tokens.end(); ++iter) {
+			
 			}
 
 		}
