@@ -268,14 +268,14 @@ int guessPlainTextOne(string ct)
     		return 0;
     	else if(checkSecondPT(tokens))
     		return 1;
-    	/*else if(checkThirdPT(tokens))
+    	else if(checkThirdPT(tokens))
     		return 2;
     	else if(checkFourthPT(tokens))
     		return 3;
     	else if(checkFifthPT(tokens))
-    		return 4;*/
-    	//else
-    		//return 5;
+    		return 4;
+    	else
+    		return 5;
     }
 }
 
