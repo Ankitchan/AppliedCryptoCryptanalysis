@@ -302,6 +302,11 @@ string test_two_dictionary[] = {
 "violators",
 "rankly" };
 
+// Keys represent the integer ciphertext
+// num is the integer
+// used is whether or not it has been deciphered
+// letter is the plaintext
+
 class Key {
 public:
 	Key(int aNum): num(aNum), used(false), letter(' ') {}
@@ -332,41 +337,24 @@ private:
 	char letter;
 };
 
-class Info {
-	Info(int aNum, int numOccur, int index) : num(aNum), occurences(numOccur), index(index) {}
 
-	int getNum() {
-		return num;
-	}
 
-	bool getOccur() {
-		return occurences;
-	}
-
-	char getIndex() {
-		return index;
-	}
-
-private:
-	int num;
-	int occurences;
-	int index;
-};
-
-void decryptKey(vector<Key>& text, int aKey,  char letter) {
-	for (vector<Key>::iterator it = text.begin(); it != text.end(); ++it) {
-		if (it->getNum == aKey) {
-			it->setLetter(letter);
-			it->setUsed(true);
+void decryptWord(vector<Key>::iterator& vi, map<char, vector<int>>& letterToKey, const string& word) {
+	int  length = word.size();
+	for (int i = -1 * (length + 1); i < 1; ++i) {
+		if(i != -1 *(length + 1) && i != 0) {
+			(vi + i)->setLetter(word[length + i]);
 		}
+		Key* keyPointer = &(*(vi + i));
+		vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+		if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+			keys_of_letter->push_back(keyPointer->getNum());
+		keyPointer->setUsed(true);
 	}
+
 }
 
-int charToInt(char c) {
-	return (int)c - 96;
-}
-
-int guessPlainTextTwo(string ct)
+vector<Key>& guessPlainTextTwo(string ct)
 {
 	stringstream ss(ct);
 	string item;
@@ -411,7 +399,7 @@ int guessPlainTextTwo(string ct)
 		// Looping through possible pairs to be 'b'
 		for (vector<int>::iterator i = popu_keys.begin(); i != popu_keys.end(); ++i) { 
 			//keyToLetter[*i] = 'b';
-			// Set 'gibbousness in ciphertex
+			// Set 'gibbousness in ciphertext
 			for (vector<int>::iterator iter = key_pairs_index[*i].begin(); iter != key_pairs_index[*i].end(); ++iter) {
 				tokens[*(iter - 2)].setLetter('g');
 				tokens[*(iter - 1)].setLetter('i');
@@ -427,7 +415,6 @@ int guessPlainTextTwo(string ct)
 
 
 				for (int j = -3; j < 9; ++j) {
-					//keyToLetter[tokens[*(iter + j)].getNum()] = tokens[*(iter + j)].getLetter();
 					Key* keyPointer = &tokens[*(iter + j)];
 					vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
 					if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
@@ -439,91 +426,99 @@ int guessPlainTextTwo(string ct)
 
 			// Set 'briskly' in ciphertext
 			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
+				decryptWord(iter, letterToKey, "brisking");
+
 				if ((iter - 7)->getNum() == *i && !(iter->getUsed())) {
-					tokens[(iter - 8)->getNum()].setLetter('b');
-					tokens[(iter - 7)->getNum()].setLetter('r');
-					tokens[(iter - 6)->getNum()].setLetter('i');
-					tokens[(iter - 5)->getNum()].setLetter('s');
-					tokens[(iter - 4)->getNum()].setLetter('k');
-					tokens[(iter - 3)->getNum()].setLetter('i');
-					tokens[(iter - 2)->getNum()].setLetter('n');
-					tokens[(iter - 1)->getNum()].setLetter('g');
+					decryptWord(iter, letterToKey, "brisking");
+
+					/*(iter - 8)->setLetter('b');
+					(iter - 7)->setLetter('r');
+					(iter - 6)->setLetter('i');
+					(iter - 5)->setLetter('s');
+					(iter - 4)->setLetter('k');
+					(iter - 3)->setLetter('i');
+					(iter - 2)->setLetter('n');
+					(iter - 1)->setLetter('g');
 
 					for (int j = -9; j < 1; ++j) {
-						//if (keyToLetter[(iter + j)->getNum()] == ' ')
-						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
 						Key* keyPointer = &(*(iter + j));
 						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
 						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
 							keys_of_letter->push_back(keyPointer->getNum());
 						keyPointer->setUsed(true);
-					}
+					}*/
 				}
 			}
 
 			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
 				if ((iter - 2)->getNum() == letterToKey['k'][0] && !(iter->getUsed())) {
-					tokens[(iter - 6)->getNum()].setLetter('r');
-					tokens[(iter - 5)->getNum()].setLetter('a');
-					tokens[(iter - 4)->getNum()].setLetter('n');
-					tokens[(iter - 3)->getNum()].setLetter('k');
-					tokens[(iter - 2)->getNum()].setLetter('l');
-					tokens[(iter - 1)->getNum()].setLetter('y');
+					decryptWord(iter, letterToKey, "rankly");
+					
+					//(iter - 6)->setLetter('r');
+					//(iter - 5)->setLetter('a');
+					//(iter - 4)->setLetter('n');
+					//(iter - 3)->setLetter('k');
+					//(iter - 2)->setLetter('l');
+					//(iter - 1)->setLetter('y');
 
-					for (int j = -7; j < 1; ++j) {
-						//if (keyToLetter[(iter + j)->getNum()] != ' ')
-						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
-						Key* keyPointer = &(*(iter + j));
-						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
-						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
-							keys_of_letter->push_back(keyPointer->getNum());
-						keyPointer->setUsed(true);
-					}
+					//for (int j = -7; j < 1; ++j) {
+					//	//if (keyToLetter[(iter + j)->getNum()] != ' ')
+					//	//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+					//	Key* keyPointer = &(*(iter + j));
+					//	vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+					//	if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+					//		keys_of_letter->push_back(keyPointer->getNum());
+					//	keyPointer->setUsed(true);
+					//}
 				}
 			}
 
 			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
 				if (((iter - 4)->getNum() == letterToKey['g'][0] || ((iter - 4)->getNum() == letterToKey['g'][1])) && !(iter->getUsed())) { // RISK
-					tokens[(iter - 8)->getNum()].setLetter('e');
-					tokens[(iter - 7)->getNum()].setLetter('n');
-					tokens[(iter - 6)->getNum()].setLetter('e');
-					tokens[(iter - 5)->getNum()].setLetter('r');
-					tokens[(iter - 4)->getNum()].setLetter('g');
-					tokens[(iter - 3)->getNum()].setLetter('i');
-					tokens[(iter - 2)->getNum()].setLetter('z');
-					tokens[(iter - 1)->getNum()].setLetter('e');
+					decryptWord(iter, letterToKey, "energize");
+																																			
+					//(iter - 8)->setLetter('e');
+					//(iter - 7)->setLetter('n');
+					//(iter - 6)->setLetter('e');
+					//(iter - 5)->setLetter('r');
+					//(iter - 4)->setLetter('g');
+					//(iter - 3)->setLetter('i');
+					//(iter - 2)->setLetter('z');
+					//(iter - 1)->setLetter('e');
 
-					for (int j = -9; j < 1; ++j) {
-						//if (keyToLetter[(iter + j)->getNum()] != ' ')
-						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
-						Key* keyPointer = &(*(iter + j));
-						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
-						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
-							keys_of_letter->push_back(keyPointer->getNum());
-						keyPointer->setUsed(true);
-					}
+					//for (int j = -9; j < 1; ++j) {
+					//	//if (keyToLetter[(iter + j)->getNum()] != ' ')
+					//	//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+					//	Key* keyPointer = &(*(iter + j));
+					//	vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+					//	if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+					//		keys_of_letter->push_back(keyPointer->getNum());
+					//	keyPointer->setUsed(true);
+					//}
 				}
 			}
 
 			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
 				if (((iter - 6)->getNum() == letterToKey['y'][0] || ((iter - 6)->getNum() == letterToKey['y'][1])) && !(iter->getUsed())) { //RISK
-					tokens[(iter - 7)->getNum()].setLetter('n');
-					tokens[(iter - 6)->getNum()].setLetter('y');
-					tokens[(iter - 5)->getNum()].setLetter('m');
-					tokens[(iter - 4)->getNum()].setLetter('p');
-					tokens[(iter - 3)->getNum()].setLetter('h');
-					tokens[(iter - 2)->getNum()].setLetter('a');
-					tokens[(iter - 1)->getNum()].setLetter('l');
+					decryptWord(iter, letterToKey, "nymphal");
+																																			
+					//(iter - 7)->setLetter('n');
+					//(iter - 6)->setLetter('y');
+					//(iter - 5)->setLetter('m');
+					//(iter - 4)->setLetter('p');
+					//(iter - 3)->setLetter('h');
+					//(iter - 2)->setLetter('a');
+					//(iter - 1)->setLetter('l');
 
-					for (int j = -8; j < 1; ++j) {
-						//if (keyToLetter[(iter + j)->getNum()] != ' ')
-						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
-						Key* keyPointer = &(*(iter + j));
-						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
-						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
-							keys_of_letter->push_back(keyPointer->getNum());
-						keyPointer->setUsed(true);
-					}
+					//for (int j = -8; j < 1; ++j) {
+					//	//if (keyToLetter[(iter + j)->getNum()] != ' ')
+					//	//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+					//	Key* keyPointer = &(*(iter + j));
+					//	vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+					//	if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+					//		keys_of_letter->push_back(keyPointer->getNum());
+					//	keyPointer->setUsed(true);
+					//}
 				}
 			}
 
@@ -532,24 +527,26 @@ int guessPlainTextTwo(string ct)
 					((iter - 1)->getNum() == letterToKey['g'][0] || ((iter - 1)->getNum() == letterToKey['g'][1])) &&
 					!(iter->getUsed())) { //RISK
 
-					tokens[(iter - 8)->getNum()].setLetter('s');
-					tokens[(iter - 7)->getNum()].setLetter('a');
-					tokens[(iter - 6)->getNum()].setLetter('m');
-					tokens[(iter - 5)->getNum()].setLetter('p');
-					tokens[(iter - 4)->getNum()].setLetter('l');
-					tokens[(iter - 3)->getNum()].setLetter('i');
-					tokens[(iter - 2)->getNum()].setLetter('n');
-					tokens[(iter - 1)->getNum()].setLetter('g');
+					decryptWord(iter, letterToKey, "sampling");
 
-					for (int j = -9; j < 1; ++j) {
-						//if (keyToLetter[(iter + j)->getNum()] != ' ')
-						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
-						Key* keyPointer = &(*(iter + j));
-						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
-						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
-							keys_of_letter->push_back(keyPointer->getNum());
-						keyPointer->setUsed(true);
-					}
+					//(iter - 8)->setLetter('s');
+					//(iter - 7)->setLetter('a');
+					//(iter - 6)->setLetter('m');
+					//(iter - 5)->setLetter('p');
+					//(iter - 4)->setLetter('l');
+					//(iter - 3)->setLetter('i');
+					//(iter - 2)->setLetter('n');
+					//(iter - 1)->setLetter('g');
+
+					//for (int j = -9; j < 1; ++j) {
+					//	//if (keyToLetter[(iter + j)->getNum()] != ' ')
+					//	//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+					//	Key* keyPointer = &(*(iter + j));
+					//	vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+					//	if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+					//		keys_of_letter->push_back(keyPointer->getNum());
+					//	keyPointer->setUsed(true);
+					//}
 				}
 			}
 
@@ -557,27 +554,28 @@ int guessPlainTextTwo(string ct)
 				if (((iter - 5)->getNum() == letterToKey['p'][0] || ((iter - 5)->getNum() == letterToKey['p'][1])) &&
 					((iter - 3)->getNum() == letterToKey['p'][0] || ((iter - 3)->getNum() == letterToKey['p'][1])) &&
 					!(iter->getUsed())) { //RISK
+					decryptWord(iter, letterToKey, "stovepipes");
 
-					tokens[(iter - 10)->getNum()].setLetter('s');
-					tokens[(iter - 9)->getNum()].setLetter('t');
-					tokens[(iter - 8)->getNum()].setLetter('o');
-					tokens[(iter - 7)->getNum()].setLetter('v');
-					tokens[(iter - 6)->getNum()].setLetter('e');
-					tokens[(iter - 5)->getNum()].setLetter('p');
-					tokens[(iter - 4)->getNum()].setLetter('i');
-					tokens[(iter - 3)->getNum()].setLetter('p');
-					tokens[(iter - 2)->getNum()].setLetter('e');
-					tokens[(iter - 1)->getNum()].setLetter('s');
+					//(iter - 10)->setLetter('s');
+					//(iter - 9)->setLetter('t');
+					//(iter - 8)->setLetter('o');
+					//(iter - 7)->setLetter('v');
+					//(iter - 6)->setLetter('e');
+					//(iter - 5)->setLetter('p');
+					//(iter - 4)->setLetter('i');
+					//(iter - 3)->setLetter('p');
+					//(iter - 2)->setLetter('e');
+					//(iter - 1)->setLetter('s');
 
-					for (int j = -11; j < 1; ++j) {
-						//if (keyToLetter[(iter + j)->getNum()] != ' ')
-						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
-						Key* keyPointer = &(*(iter + j));
-						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
-						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
-							keys_of_letter->push_back(keyPointer->getNum());
-						keyPointer->setUsed(true);
-					}
+					//for (int j = -11; j < 1; ++j) {
+					//	//if (keyToLetter[(iter + j)->getNum()] != ' ')
+					//	//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+					//	Key* keyPointer = &(*(iter + j));
+					//	vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+					//	if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+					//		keys_of_letter->push_back(keyPointer->getNum());
+					//	keyPointer->setUsed(true);
+					//}
 				}
 			}
 
@@ -586,27 +584,29 @@ int guessPlainTextTwo(string ct)
 					((iter-5)->getNum() == letterToKey['g'][0] || ((iter-5)->getNum() == letterToKey['g'][1])) &&
 					!(iter->getUsed())) {
 
-					tokens[(iter - 11)->getNum()].setLetter('m');
-					tokens[(iter - 10)->getNum()].setLetter('e');
-					tokens[(iter - 9)->getNum()].setLetter('a');
-					tokens[(iter - 8)->getNum()].setLetter('n');
-					tokens[(iter - 7)->getNum()].setLetter('i');
-					tokens[(iter - 6)->getNum()].setLetter('n');
-					tokens[(iter - 5)->getNum()].setLetter('g');
-					tokens[(iter - 4)->getNum()].setLetter('l');
-					tokens[(iter - 3)->getNum()].setLetter('e');
-					tokens[(iter - 2)->getNum()].setLetter('s');
-					tokens[(iter - 1)->getNum()].setLetter('s');
+					decryptWord(iter, letterToKey, "meaningless");
 
-					for (int j = -12; j < 1; ++j) {
-						//if (keyToLetter[(iter + j)->getNum()] != ' ')
-						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
-						Key* keyPointer = &(*(iter + j));
-						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
-						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
-							keys_of_letter->push_back(keyPointer->getNum());
-						keyPointer->setUsed(true);
-					}
+					//(iter - 11)->setLetter('m');
+					//(iter - 10)->setLetter('e');
+					//(iter - 9)->setLetter('a');
+					//(iter - 8)->setLetter('n');
+					//(iter - 7)->setLetter('i');
+					//(iter - 6)->setLetter('n');
+					//(iter - 5)->setLetter('g');
+					//(iter - 4)->setLetter('l');
+					//(iter - 3)->setLetter('e');
+					//(iter - 2)->setLetter('s');
+					//(iter - 1)->setLetter('s');
+
+					//for (int j = -12; j < 1; ++j) {
+					//	//if (keyToLetter[(iter + j)->getNum()] != ' ')
+					//	//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+					//	Key* keyPointer = &(*(iter + j));
+					//	vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+					//	if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+					//		keys_of_letter->push_back(keyPointer->getNum());
+					//	keyPointer->setUsed(true);
+					//}
 				}
 			}
 
@@ -615,22 +615,24 @@ int guessPlainTextTwo(string ct)
 					((iter - 2)->getNum() == letterToKey['l'][0] || ((iter - 2)->getNum() == letterToKey['l'][1]) || ((iter - 2)->getNum() == letterToKey['l'][2])) &&
 					!(iter->getUsed())) {
 
-					tokens[(iter - 6)->getNum()].setLetter('s');
-					tokens[(iter - 5)->getNum()].setLetter('w');
-					tokens[(iter - 4)->getNum()].setLetter('e');
-					tokens[(iter - 3)->getNum()].setLetter('l');
-					tokens[(iter - 2)->getNum()].setLetter('l');
-					tokens[(iter - 1)->getNum()].setLetter('s');
+					decryptWord(iter, letterToKey, "swells");
 
-					for (int j = -7; j < 1; ++j) {
-						//if (keyToLetter[(iter + j)->getNum()] != ' ')
-						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
-						Key* keyPointer = &(*(iter + j));
-						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
-						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
-							keys_of_letter->push_back(keyPointer->getNum());
-						keyPointer->setUsed(true);
-					}
+					//(iter - 6)->setLetter('s');
+					//(iter - 5)->setLetter('w');
+					//(iter - 4)->setLetter('e');
+					//(iter - 3)->setLetter('l');
+					//(iter - 2)->setLetter('l');
+					//(iter - 1)->setLetter('s');
+
+					//for (int j = -7; j < 1; ++j) {
+					//	//if (keyToLetter[(iter + j)->getNum()] != ' ')
+					//	//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+					//	Key* keyPointer = &(*(iter + j));
+					//	vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+					//	if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+					//		keys_of_letter->push_back(keyPointer->getNum());
+					//	keyPointer->setUsed(true);
+					//}
 				}
 			}
 
@@ -639,25 +641,27 @@ int guessPlainTextTwo(string ct)
 					(((iter - 1))->getNum() == letterToKey['s'][0] || (((iter - 1))->getNum() == letterToKey['l'][1]) || (((iter - 1))->getNum() == letterToKey['s'][2]) || (((iter - 1))->getNum() == letterToKey['s'][3]) || (((iter - 1))->getNum() == letterToKey['s'][4])) &&
 					!(iter->getUsed())) {
 
-					tokens[(iter - 9)->getNum()].setLetter('v');
-					tokens[(iter - 8)->getNum()].setLetter('i');
-					tokens[(iter - 7)->getNum()].setLetter('o');
-					tokens[(iter - 6)->getNum()].setLetter('l');
-					tokens[(iter - 5)->getNum()].setLetter('a');
-					tokens[(iter - 4)->getNum()].setLetter('t');
-					tokens[(iter - 3)->getNum()].setLetter('o');
-					tokens[(iter - 2)->getNum()].setLetter('r');
-					tokens[(iter - 1)->getNum()].setLetter('s');
+					decryptWord(iter, letterToKey, "violators");
 
-					for (int j = -10; j < 1; ++j) {
-						//if (keyToLetter[(iter + j)->getNum()] != ' ')
-						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
-						Key* keyPointer = &(*(iter + j));
-						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
-						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
-							keys_of_letter->push_back(keyPointer->getNum());
-						keyPointer->setUsed(true);
-					}
+					//(iter - 9)->setLetter('v');
+					//(iter - 8)->setLetter('i');
+					//(iter - 7)->setLetter('o');
+					//(iter - 6)->setLetter('l');
+					//(iter - 5)->setLetter('a');
+					//(iter - 4)->setLetter('t');
+					//(iter - 3)->setLetter('o');
+					//(iter - 2)->setLetter('r');
+					//(iter - 1)->setLetter('s');
+
+					//for (int j = -10; j < 1; ++j) {
+					//	//if (keyToLetter[(iter + j)->getNum()] != ' ')
+					//	//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+					//	Key* keyPointer = &(*(iter + j));
+					//	vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+					//	if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+					//		keys_of_letter->push_back(keyPointer->getNum());
+					//	keyPointer->setUsed(true);
+					//}
 				}
 			}
 
@@ -666,26 +670,28 @@ int guessPlainTextTwo(string ct)
 					((iter - 5)->getNum() == letterToKey['s'][0] || ((iter - 5)->getNum() == letterToKey['l'][1]) || ((iter - 5)->getNum() == letterToKey['s'][2]) || ((iter - 5)->getNum() == letterToKey['s'][3]) || ((iter - 5)->getNum() == letterToKey['s'][4])) &&
 					!(iter->getUsed())) {
 
-					tokens[(iter - 10)->getNum()].setLetter('t');
-					tokens[(iter - 9)->getNum()].setLetter('r');
-					tokens[(iter - 8)->getNum()].setLetter('a');
-					tokens[(iter - 7)->getNum()].setLetter('v');
-					tokens[(iter - 6)->getNum()].setLetter('e');
-					tokens[(iter - 5)->getNum()].setLetter('s');
-					tokens[(iter - 4)->getNum()].setLetter('t');
-					tokens[(iter - 3)->getNum()].setLetter('i');
-					tokens[(iter - 2)->getNum()].setLetter('e');
-					tokens[(iter - 1)->getNum()].setLetter('d');
+					decryptWord(iter, letterToKey, "travestied");
 
-					for (int j = -11; j < 1; ++j) {
-						//if (keyToLetter[(iter + j)->getNum()] != ' ')
-						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
-						Key* keyPointer = &(*(iter + j));
-						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
-						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
-							keys_of_letter->push_back(keyPointer->getNum());
-						keyPointer->setUsed(true);
-					}
+					//(iter - 10)->setLetter('t');
+					//(iter - 9)->setLetter('r');
+					//(iter - 8)->setLetter('a');
+					//(iter - 7)->setLetter('v');
+					//(iter - 6)->setLetter('e');
+					//(iter - 5)->setLetter('s');
+					//(iter - 4)->setLetter('t');
+					//(iter - 3)->setLetter('i');
+					//(iter - 2)->setLetter('e');
+					//(iter - 1)->setLetter('d');
+
+					//for (int j = -11; j < 1; ++j) {
+					//	//if (keyToLetter[(iter + j)->getNum()] != ' ')
+					//	//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+					//	Key* keyPointer = &(*(iter + j));
+					//	vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+					//	if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+					//		keys_of_letter->push_back(keyPointer->getNum());
+					//	keyPointer->setUsed(true);
+					//}
 				}
 			}
 
@@ -694,22 +700,24 @@ int guessPlainTextTwo(string ct)
 					((iter - 5)->getNum() == letterToKey['i'][0] || ((iter - 5)->getNum() == letterToKey['i'][1]) || ((iter - 5)->getNum() == letterToKey['i'][2]) || ((iter - 5)->getNum() == letterToKey['i'][3]) || ((iter - 5)->getNum() == letterToKey['i'][4]) || ((iter - 5)->getNum() == letterToKey['i'][5])) &&
 					!(iter->getUsed())) {
 
-					tokens[(iter - 6)->getNum()].setLetter('f');
-					tokens[(iter - 5)->getNum()].setLetter('i');
-					tokens[(iter - 4)->getNum()].setLetter('n');
-					tokens[(iter - 3)->getNum()].setLetter('a');
-					tokens[(iter - 2)->getNum()].setLetter('l');
-					tokens[(iter - 1)->getNum()].setLetter('e');
+					decryptWord(iter, letterToKey, "finale");
 
-					for (int j = -7; j < 1; ++j) {
-						//if (keyToLetter[(iter + j)->getNum()] != ' ')
-						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
-						Key* keyPointer = &(*(iter + j));
-						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
-						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
-							keys_of_letter->push_back(keyPointer->getNum());
-						keyPointer->setUsed(true);
-					}
+					//(iter - 6)->setLetter('f');
+					//(iter - 5)->setLetter('i');
+					//(iter - 4)->setLetter('n');
+					//(iter - 3)->setLetter('a');
+					//(iter - 2)->setLetter('l');
+					//(iter - 1)->setLetter('e');
+
+					//for (int j = -7; j < 1; ++j) {
+					//	//if (keyToLetter[(iter + j)->getNum()] != ' ')
+					//	//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+					//	Key* keyPointer = &(*(iter + j));
+					//	vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+					//	if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+					//		keys_of_letter->push_back(keyPointer->getNum());
+					//	keyPointer->setUsed(true);
+					//}
 				}
 			}
 
@@ -718,35 +726,115 @@ int guessPlainTextTwo(string ct)
 					((iter - 5)->getNum() == letterToKey['i'][0] || ((iter - 5)->getNum() == letterToKey['i'][1]) || ((iter - 5)->getNum() == letterToKey['i'][2]) || ((iter - 5)->getNum() == letterToKey['i'][3]) || ((iter - 5)->getNum() == letterToKey['i'][4]) || ((iter - 5)->getNum() == letterToKey['i'][5])) &&
 					!(iter->getUsed())) {
 
-					tokens[(iter - 8)->getNum()].setLetter('d');
-					tokens[(iter - 7)->getNum()].setLetter('e');
-					tokens[(iter - 6)->getNum()].setLetter('x');
-					tokens[(iter - 5)->getNum()].setLetter('t');
-					tokens[(iter - 4)->getNum()].setLetter('r');
-					tokens[(iter - 3)->getNum()].setLetter('i');
-					tokens[(iter - 2)->getNum()].setLetter('n');
-					tokens[(iter - 1)->getNum()].setLetter('s');
+					decryptWord(iter, letterToKey, "dextrins");
 
-					for (int j = -9; j < 1; ++j) {
-						//if (keyToLetter[(iter + j)->getNum()] != ' ')
-						//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
-						Key* keyPointer = &(*(iter + j));
-						vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
-						if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
-							keys_of_letter->push_back(keyPointer->getNum());
-						keyPointer->setUsed(true);
-					}
+					//(iter - 8)->setLetter('d');
+					//(iter - 7)->setLetter('e');
+					//(iter - 6)->setLetter('x');
+					//(iter - 5)->setLetter('t');
+					//(iter - 4)->setLetter('r');
+					//(iter - 3)->setLetter('i');
+					//(iter - 2)->setLetter('n');
+					//(iter - 1)->setLetter('s');
+
+					//for (int j = -9; j < 1; ++j) {
+					//	//if (keyToLetter[(iter + j)->getNum()] != ' ')
+					//	//	keyToLetter[(iter + j)->getNum()] = (iter + j)->getLetter();
+					//	Key* keyPointer = &(*(iter + j));
+					//	vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
+					//	if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+					//		keys_of_letter->push_back(keyPointer->getNum());
+					//	keyPointer->setUsed(true);
+					//}
 				}
 			}
 
 			for (vector<Key>::iterator iter = tokens.begin(); iter < tokens.end(); ++iter) {
-				for (vector<Key>::iterator iter2 = iter; iter2 < tokens.end(); ++iter) {
-			
+				if (iter->getLetter() == ' ' && !((iter + 1)->getUsed())) {
+					int length = 4;
+					vector<Key>::iterator iter2 = iter + 5; 
+					while (iter2->getLetter() != ' ') {
+							++length; 
+							++iter2;
+					}
+					switch (length) {
+					case 4:
+						(iter2 - 4)->setLetter('h');
+						(iter2 - 3)->setLetter('o');
+						(iter2 - 2)->setLetter('p');
+						(iter2 - 1)->setLetter('e');
+					case 6:
+						(iter2 - 6)->setLetter('n');
+						(iter2 - 5)->setLetter('e');
+						(iter2 - 4)->setLetter('s');
+						(iter2 - 3)->setLetter('t');
+						(iter2 - 2)->setLetter('e');
+						(iter2 - 1)->setLetter('d');
+					case 8:
+						(iter2 - 8)->setLetter('c');
+						(iter2 - 7)->setLetter('o');
+						(iter2 - 6)->setLetter('t');
+						(iter2 - 5)->setLetter('t');
+						(iter2 - 4)->setLetter('o');
+						(iter2 - 3)->setLetter('n');
+						(iter2 - 2)->setLetter('e');
+						(iter2 - 1)->setLetter('d');
+					case 9:
+						(iter2 - 9)->setLetter('m');
+						(iter2 - 8)->setLetter('a');
+						(iter2 - 7)->setLetter('t');
+						(iter2 - 6)->setLetter('u');
+						(iter2 - 5)->setLetter('r');
+						(iter2 - 4)->setLetter('a');
+						(iter2 - 3)->setLetter('t');
+						(iter2 - 2)->setLetter('e');
+						(iter2 - 1)->setLetter('s');
+					case 10:
+						(iter2 - 10)->setLetter('j');
+						(iter2 - 9)->setLetter('e');
+						(iter2 - 8)->setLetter('o');
+						(iter2 - 7)->setLetter('p');
+						(iter2 - 6)->setLetter('a');
+						(iter2 - 5)->setLetter('r');
+						(iter2 - 4)->setLetter('d');
+						(iter2 - 3)->setLetter('o');
+						(iter2 - 2)->setLetter('u');
+						(iter2 - 1)->setLetter('s');
+					case 11:
+						(iter2 - 11)->setLetter('f');
+						(iter2 - 10)->setLetter('r');
+						(iter2 - 9)->setLetter('e');
+						(iter2 - 8)->setLetter('e');
+						(iter2 - 7)->setLetter('l');
+						(iter2 - 6)->setLetter('a');
+						(iter2 - 5)->setLetter('n');
+						(iter2 - 4)->setLetter('c');
+						(iter2 - 3)->setLetter('i');
+						(iter2 - 2)->setLetter('n');
+						(iter2 - 1)->setLetter('g');
+					case 12:
+						(iter2 - 12)->setLetter('e');
+						(iter2 - 11)->setLetter('x');
+						(iter2 - 10)->setLetter('p');
+						(iter2 - 9)->setLetter('a');
+						(iter2 - 8)->setLetter('t');
+						(iter2 - 7)->setLetter('i');
+						(iter2 - 6)->setLetter('a');
+						(iter2 - 5)->setLetter('t');
+						(iter2 - 4)->setLetter('i');
+						(iter2 - 3)->setLetter('o');
+						(iter2 - 2)->setLetter('n');
+						(iter2 - 1)->setLetter('s');
+					}
+					
+				}
+				
 			}
 
 		}
-		
+	
 	}
+	return tokens;
 }
 
 
