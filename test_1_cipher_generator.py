@@ -1,4 +1,5 @@
 import random
+import sys
 
 def fill_letter(numbers, letters, letter, freq):
     for x in range (0, freq):
@@ -60,9 +61,14 @@ def main() :
             letter_keys = ltk[ord(plaintext1[x]) - 96]
             cipher.append( letter_keys[random.randint(0, len(letter_keys) - 1)])
 
+
+    print
+    print
     print "Ciphertext 1:"
 
-    print cipher
+    for x in range(0, len(cipher)):
+        sys.stdout.write(str(cipher[x]))
+        sys.stdout.write(',')
 
     cipher = []
 
@@ -73,9 +79,14 @@ def main() :
             letter_keys = ltk[ord(plaintext2[x]) - 96]
             cipher.append( letter_keys[random.randint(0, len(letter_keys) - 1)])
 
+
+    print
+    print
     print "Ciphertext 2:"
 
-    print cipher
+    for x in range(0, len(cipher)):
+        sys.stdout.write(str(cipher[x]))
+        sys.stdout.write(',')
 
     cipher = []
 
@@ -86,9 +97,14 @@ def main() :
             letter_keys = ltk[ord(plaintext3[x]) - 96]
             cipher.append( letter_keys[random.randint(0, len(letter_keys) - 1)])
 
+
+    print
+    print
     print "Ciphertext 3:"
 
-    print cipher
+    for x in range(0, len(cipher)):
+        sys.stdout.write(str(cipher[x]))
+        sys.stdout.write(',')
 
     cipher = []
 
@@ -99,9 +115,14 @@ def main() :
             letter_keys = ltk[ord(plaintext4[x]) - 96]
             cipher.append( letter_keys[random.randint(0, len(letter_keys) - 1)])
 
+
+    print
+    print
     print "Ciphertext 4:"
 
-    print cipher
+    for x in range(0, len(cipher)):
+        sys.stdout.write(str(cipher[x]))
+        sys.stdout.write(',')
 
     cipher = []
 
@@ -112,9 +133,14 @@ def main() :
             letter_keys = ltk[ord(plaintext5[x]) - 96]
             cipher.append( letter_keys[random.randint(0, len(letter_keys) - 1)])
 
+
+    print
+    print
     print "Ciphertext 5:"
 
-    print cipher
+    for x in range(0, len(cipher)):
+        sys.stdout.write(str(cipher[x]))
+        sys.stdout.write(',')
         
 
 

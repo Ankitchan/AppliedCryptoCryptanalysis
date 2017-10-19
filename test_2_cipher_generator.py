@@ -1,4 +1,5 @@
 import random
+import sys
 
 def fill_letter(numbers, letters, letter, freq):
     for x in range (0, freq):
@@ -55,11 +56,18 @@ def main() :
         else:
             letter_keys = ltk[ord(plain[x]) - 96]
             cipher.append( letter_keys[random.randint(0, len(letter_keys) - 1)])
+
+    print
+    print
     print plain
+    print
+    print
 
-    print cipher
+    for x in range(0, len(cipher)):
+        sys.stdout.write(str(cipher[x]))
+        sys.stdout.write(',')
 
-    print len(cipher)
+
         
 
 
