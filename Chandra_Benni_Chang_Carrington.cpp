@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <fstream>
 #include <map>
 using namespace std;
 
@@ -60,7 +61,7 @@ bool checkSecondPT(vector<int> tokens)
 	//condition of b are it should occur on 41,57,68,72,116,160,175,193,207,212,250,373,383,387,406,420
 	int idxArrB[] = {57,68,72,116,160,175,193,207,212,250,373,383,387,406,420};
 	int idxB = tokens[41];
-	for(int i=0;i<sizeof(idxArrB)/sizeof(idxArrB[0]);i++)
+	for(size_t i=0;i<sizeof(idxArrB)/sizeof(idxArrB[0]);i++)
 	{
 		if(!(idxB == tokens[i]))
 			return 0;
@@ -79,7 +80,7 @@ bool checkSecondPT(vector<int> tokens)
 				//condtion of v is it should occur at 6 times --> CHANGE IT
 				int idxArrV[] = {82, 138, 148, 335, 453};
 				int idxV = tokens[32];
-				for (int i = 0; i<sizeof(idxArrV) / sizeof(idxArrV[0]); i++)
+				for (size_t i = 0; i<sizeof(idxArrV) / sizeof(idxArrV[0]); i++)
 				{
 					if (!(idxV == tokens[i]))
 						return 0;
@@ -109,7 +110,7 @@ bool checkThirdPT(vector<int> tokens)
 	//condition of b are it should occur on 150, 211, 218, 226, 240, 332, 375, 393, 466
 	int idxArrB[] = {211, 218, 226, 240, 332, 375, 393, 466};
 	int idxB = tokens[150];
-	for (int i = 0; i<sizeof(idxArrB) / sizeof(idxArrB[0]); i++)
+	for (size_t i = 0; i<sizeof(idxArrB) / sizeof(idxArrB[0]); i++)
 	{
 		if (!(idxB == tokens[i]))
 			return 0;
@@ -117,8 +118,8 @@ bool checkThirdPT(vector<int> tokens)
 	if (countVal(tokens, idxB) == 9)
 	{
 		//condition of k is it should occour at 111, 214, 331, 456
-		int idxK = tokens[214, 331, 456];
-		if (idxK == tokens[111] && countVal(tokens, idxK) == 4)
+		int idxK = tokens[214];
+		if (idxK == tokens[111]  && idxK == tokens[331] && idxK == tokens[331] && countVal(tokens, idxK) == 4 )
 		{
 
 			//condtion of j is that it should occur 177
@@ -127,7 +128,7 @@ bool checkThirdPT(vector<int> tokens)
 				//condtion of v is it should occur at 17, 81, 143, 233, 280, 369 
 				int idxArrV[] = { 81, 143, 233, 280, 369 };
 				int idxV = tokens[17];
-				for (int i = 0; i<sizeof(idxArrV) / sizeof(idxArrV[0]); i++)
+				for (size_t i = 0; i<sizeof(idxArrV) / sizeof(idxArrV[0]); i++)
 				{
 					if (!(idxV == tokens[i]))
 						return 0;
@@ -157,7 +158,7 @@ bool checkFourthPT(vector<int> tokens)
 	//condition of b are it should occur on 15, 46, 116, 156, 247, 345, 380, 386, 387, 479
 	int idxArrB[] = { 46, 116, 156, 247, 345, 380, 386, 387, 479 };
 	int idxB = tokens[15];
-	for (int i = 0; i<sizeof(idxArrB) / sizeof(idxArrB[0]); i++)
+	for (size_t i = 0; i<sizeof(idxArrB) / sizeof(idxArrB[0]); i++)
 	{
 		if (!(idxB == tokens[i]))
 			return 0;
@@ -165,8 +166,8 @@ bool checkFourthPT(vector<int> tokens)
 	if (countVal(tokens, idxB) == 10)
 	{
 		//condition of k is it should occour at 18, 407, 482, 489
-		int idxK = tokens[407, 482, 489];
-		if (idxK == tokens[18] && countVal(tokens, idxK) == 4)
+		int idxK = tokens[407];
+		if (idxK == tokens[18] && idxK == tokens[482] && idxK == tokens[489] && countVal(tokens, idxK) == 4)
 		{
 
 			//condtion of q is that it should never occur
@@ -175,7 +176,7 @@ bool checkFourthPT(vector<int> tokens)
 				//condtion of v is it should occur at 17, 81, 143, 233, 280, 369
 				int idxArrV[] = { 81, 143, 233, 280, 369 };
 				int idxV = tokens[17];
-				for (int i = 0; i<sizeof(idxArrV) / sizeof(idxArrV[0]); i++)
+				for (size_t i = 0; i<sizeof(idxArrV) / sizeof(idxArrV[0]); i++)
 				{
 					if (!(idxV == tokens[i]))
 						return 0;
@@ -189,7 +190,7 @@ bool checkFourthPT(vector<int> tokens)
 						//condition of z is it should occur 64, 67, 148, 369, 447
 						int idxArrZ[] = { 67, 148, 369, 447 };
 						int idxZ = tokens[64];
-						for (int i = 0; i<sizeof(idxArrZ) / sizeof(idxArrZ[0]); i++)
+						for (size_t i = 0; i<sizeof(idxArrZ) / sizeof(idxArrZ[0]); i++)
 						{
 							if (!(idxZ == tokens[i]))
 								return 0;
@@ -211,7 +212,7 @@ bool checkFifthPT(vector<int> tokens)
 	//condition of b are it should occur on 110, 131, 149, 260, 291, 378, 448, 468, 498
 	int idxArrB[] = { 131, 149, 260, 291, 378, 448, 468, 498 };
 	int idxB = tokens[110];
-	for (int i = 0; i<sizeof(idxArrB) / sizeof(idxArrB[0]); i++)
+	for (size_t i = 0; i<sizeof(idxArrB) / sizeof(idxArrB[0]); i++)
 	{
 		if (!(idxB == tokens[i]))
 			return 0;
@@ -229,7 +230,7 @@ bool checkFifthPT(vector<int> tokens)
 				//condtion of v is it should occur at 332, 441
 				int idxArrV[] = { 441 };
 				int idxV = tokens[332];
-				for (int i = 0; i<sizeof(idxArrV) / sizeof(idxArrV[0]); i++)
+				for (size_t i = 0; i<sizeof(idxArrV) / sizeof(idxArrV[0]); i++)
 				{
 					if (!(idxV == tokens[i]))
 						return 0;
@@ -274,9 +275,9 @@ int guessPlainTextOne(string ct)
     		return 3;
     	else if(checkFifthPT(tokens))
     		return 4;
-    	else
-    		return 5;
+    
     }
+	return -1;
 }
 
 
@@ -347,14 +348,14 @@ void decryptWord(vector<Key>::iterator& vi, map<char, vector<int>>& letterToKey,
 		}
 		Key* keyPointer = &(*(vi + i));
 		vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
-		if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
+		if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()])
 			keys_of_letter->push_back(keyPointer->getNum());
 		keyPointer->setUsed(true);
 	}
 
 }
 
-vector<Key>& guessPlainTextTwo(string ct)
+vector<Key> guessPlainTextTwo(string ct)
 {
 	stringstream ss(ct);
 	string item;
@@ -838,14 +839,33 @@ vector<Key>& guessPlainTextTwo(string ct)
 }
 
 
-int main()
+int main(int argc, char* argv[])
 {
-	string ct;
-	cout<<"Enter Cipher Text: ";
-	cin>>ct;
-	int idx_pt = guessPlainTextOne(ct);
+	if(argc != 2)
+	{
+		cout<< "usage: "<<argv[0] <<" <filename>\n";
+		return 1;
+	}	
+	ifstream inFile ;
+	inFile.open(argv[1]);
+	string ct,s;
+	//cout<<"Enter Cipher Text: ";
+	if(!inFile.is_open())
+		cout<<"Could not open file\n";
+	else
+	{
+		while(inFile >> s)
+			ct += s;
+	}
 	
-	cout<<"My Plain test guess is:%s \n"<<pt[idx_pt];
+	int idx_pt = guessPlainTextOne(ct);
+	cout<<idx_pt;
+	if(idx_pt != -1)
+		cout<<"My Plain test guess is:\n"<<pt[idx_pt]<<endl;
+	else
+		cout<<"Something is wrong."<<endl;
+
+	return 0;
 	
 		
 }
