@@ -324,7 +324,6 @@ string test_two_dictionary[] = {
 // num is the integer
 // used is whether or not it has been deciphered
 // letter is the plaintext
-
 class Key {
 public:
 	Key(int aNum) : num(aNum), used(false), letter(' ') {}
@@ -363,8 +362,7 @@ void decryptWord(vector<Key>::iterator& vi, map<char, vector<int>>& letterToKey,
 		Key* keyPointer = &(*(vi + i));
 		keyPointer->setLetter(word[length + i - 1]);
 		vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
-
-		if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()])
+		if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
 		{
 			keys_of_letter->push_back(keyPointer->getNum());
 
@@ -400,28 +398,17 @@ void checkWord(vector<Key>& vk, map<char, vector<int>>& letterToKey, const strin
 	}
 }
 
-void printTokensNum(vector<Key>& tokens) {
-	for (vector<Key>::iterator iter = tokens.begin(); iter != tokens.end(); ++iter) {
-		//cout << iter->getNum() << ",";
+bool sanityCheck(map<char, vector<int>>& letterToKey, vector<Key>& tokens) {
+	int max_keys[] = { 19, 7, 1, 2, 4, 10, 2, 2, 5, 6, 1, 1, 3, 2, 6, 6, 2, 1, 5, 5, 7, 2, 1, 2, 1, 2, 1 };
+	bool flag = false;
+	for (int i = 1; i < 27; ++i) {
+		flag = (letterToKey[(char)(96 + i)].size() > max_keys[i]);
+		if (flag)
+			break;
 	}
+	return flag;
 }
 
-void printTokensLetter(vector<Key>& tokens) {
-	for (vector<Key>::iterator iter = tokens.begin(); iter != tokens.end(); ++iter) {
-		//cout << iter->getNum() << ",";
-	}
-}
-
-void printLetterKeys(map<char, vector<int>>& letterToKey) {
-	for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
-		//cout << endl << "Keys for letter " << mi->first << ": ";
-		sort(mi->second.begin(), mi->second.end());
-		for (int j = 0; j < mi->second.size(); ++j) {
-			//cout << mi->second[j] << " ";
-		}
-	}
-	//cout << endl;
-}
 
 
 vector<Key> guessPlainTextTwo(string ct)
@@ -434,14 +421,13 @@ vector<Key> guessPlainTextTwo(string ct)
 		tokens.push_back(Key(stoi(item, &sz)));
 	}
 
-
 	//char keyToLetter[106];
 	map<char, vector<int>> letterToKey;
 	int max[27] = { 19, 7, 1, 2, 4, 10, 2, 2, 5, 6, 1, 1, 3, 2, 6, 6, 2, 1, 5, 5, 7, 2, 1, 2, 1, 2, 1 };
 	int filled[27];
 
 	vector<int> pairs;
-	if (tokens.size() >= 500)
+	if (true)
 	{
 		int prev = -1;			// The previous key
 		map<int, int> key_pairs_occ; // Key that has a pair, number of times it occurred
@@ -470,8 +456,6 @@ vector<Key> guessPlainTextTwo(string ct)
 			}
 		}
 
-		// Looping through possible pairs to be 'b'
-
 		for (vector<int>::iterator i = popu_keys.begin(); i != popu_keys.end(); ++i) { // Loop through the most popular pairs
 																					   // Set 'gibbousness' in ciphertext
 			for (vector<int>::iterator iter = key_pairs_index[*i].begin(); iter != key_pairs_index[*i].end(); ++iter) { // Finds the first b in gibbousness
@@ -487,7 +471,7 @@ vector<Key> guessPlainTextTwo(string ct)
 				tokens[*iter + 7].setLetter('s');
 				tokens[*iter + 8].setLetter('s');
 
-				for (int j = -3; j < 9; ++j) {
+				for (int j = -2; j < 9; ++j) {
 					Key* keyPointer = &tokens[*iter + j];
 					vector<int>* keys_of_letter = &letterToKey[keyPointer->getLetter()];
 					if (find(keys_of_letter->begin(), keys_of_letter->end(), keyPointer->getNum()) == letterToKey[keyPointer->getLetter()].end())
@@ -495,53 +479,316 @@ vector<Key> guessPlainTextTwo(string ct)
 					tokens[*iter + j].setUsed(true);
 				}
 			}
-
-
 			// Set 'brisking' in ciphertext
+
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
 
 			checkWord(tokens, letterToKey, "brisking", 'b', -7);
 
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
+
 			checkWord(tokens, letterToKey, "rankly", 'k', -2);
+
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
 
 			checkWord(tokens, letterToKey, "nymphal", 'y', -5);
 
-			checkWord(tokens, letterToKey, "sampling", 'p', -4, 'g', 0);
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
 
-			checkWord(tokens, letterToKey, "stovepipes", 'p', -4, 'p', -2);
+
+
 
 			checkWord(tokens, letterToKey, "meaningless", 'm', -10, 'g', -4);
 
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
+
 			checkWord(tokens, letterToKey, "freelancing", 'l', -6, 'g', 0);
 
-			checkWord(tokens, letterToKey, "energize", 'g', -3);
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
+
+			checkWord(tokens, letterToKey, "sampling", 'p', -4, 'g', 0);
+
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
+
+			checkWord(tokens, letterToKey, "energize", 'g', -3, 'r', -4);
+
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
+
+			checkWord(tokens, letterToKey, "sampling", 'p', -4, 'g', 0);
+
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
 
 			checkWord(tokens, letterToKey, "swells", 'l', -2, 'l', -1);
 
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
+
 			checkWord(tokens, letterToKey, "violators", 'l', -5, 's', 0);
+
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
 
 			checkWord(tokens, letterToKey, "travestied", 'v', -6, 's', -4);
 
-			checkWord(tokens, letterToKey, "finale", 'l', -1, 'i', -4);
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
+
+
 
 			checkWord(tokens, letterToKey, "dextrins", 'r', -3, 's', 0);
 
-			checkWord(tokens, letterToKey, "expatiations", 'x', -10);
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
 
-			checkWord(tokens, letterToKey, "maturates", 'm', -8);
+			checkWord(tokens, letterToKey, "expatiations", 'x', -10, 'p', -9);
 
-			checkWord(tokens, letterToKey, "jeopardous", 'r', -4, 's', 0);
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
+
+			checkWord(tokens, letterToKey, "stovepipes", 'p', -4, 'p', -2);
+
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
+
+
+
+			checkWord(tokens, letterToKey, "maturates", 'm', -8, 'r', -4);
+
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
+
+			checkWord(tokens, letterToKey, "meaningless", 'm', -10, 'g', -4);
+
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
+			checkWord(tokens, letterToKey, "finale", 'a', -2, 'n', -3);
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
+			for (vector<Key>::iterator iter = tokens.begin() + 9; iter < tokens.end(); ++iter) {
+				for (int i = 0; i < letterToKey['e'].size(); ++i) {
+					if ((iter - 8)->getNum() == letterToKey['e'][i] && !(iter - 8)->getUsed()) {
+						for (int j = 0; j < letterToKey['r'].size(); ++j) {
+							if (((iter - 4)->getNum() == letterToKey['r'][j]) && !(iter - 4)->getUsed()) {
+								for (int k = 0; k < letterToKey['s'].size(); ++k) {
+									if (((iter)->getNum() == letterToKey['s'][k]) && !(iter)->getUsed()) {
+										decryptWord(iter, letterToKey, "jeopardous");
+									}
+								}
+							}
+						}
+					}
+				}
+
+			}
+
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
 
 			checkWord(tokens, letterToKey, "nested", 'n', -5, 's', -3);
 
-			checkWord(tokens, letterToKey, "cottoned", 't', -5);
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
 
-			checkWord(tokens, letterToKey, "hope", 'p', -1);
+			checkWord(tokens, letterToKey, "cottoned", 't', -5, 't', -4);
 
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
+
+			checkWord(tokens, letterToKey, "hope", 'p', -1, 'h', -3);
+
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
 
 			return tokens;
 		}
 	}
 }
+
 
 
 int main(int argc, char* argv[])
