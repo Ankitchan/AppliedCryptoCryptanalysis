@@ -354,8 +354,6 @@ private:
 	char letter;
 };
 
-
-
 void decryptWord(vector<Key>::iterator& vi, map<char, vector<int>>& letterToKey, const string& word) {
 	int  length = word.size();
 	for (int i = -1 * length + 1; i < 1; ++i) {
@@ -517,7 +515,6 @@ vector<Key> guessPlainTextTwo(string ct)
 				}
 				continue;
 			}
-
 			checkWord(tokens, letterToKey, "nymphal", 'y', -5);
 
 			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
@@ -530,11 +527,45 @@ vector<Key> guessPlainTextTwo(string ct)
 				}
 				continue;
 			}
+			checkWord(tokens, letterToKey, "meaningless", 's', -1, 's', 0);
 
-
-
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
 
 			checkWord(tokens, letterToKey, "meaningless", 'm', -10, 'g', -4);
+
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
+			checkWord(tokens, letterToKey, "maturates", 'm', -8, 's', -4);
+
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
+
+			checkWord(tokens, letterToKey, "maturates", 'm', -8, 'u', -5);
 
 			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
 				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
@@ -571,7 +602,6 @@ vector<Key> guessPlainTextTwo(string ct)
 				}
 				continue;
 			}
-
 			checkWord(tokens, letterToKey, "energize", 'g', -3, 'r', -4);
 
 			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
@@ -584,9 +614,6 @@ vector<Key> guessPlainTextTwo(string ct)
 				}
 				continue;
 			}
-
-
-
 			checkWord(tokens, letterToKey, "swells", 'l', -2, 'l', -1);
 
 			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
@@ -600,7 +627,24 @@ vector<Key> guessPlainTextTwo(string ct)
 				continue;
 			}
 
-			checkWord(tokens, letterToKey, "violators", 'l', -5, 's', 0);
+			for (vector<Key>::iterator iter = tokens.begin() + 8; iter < tokens.end(); ++iter) {
+				for (int i = 0; i < letterToKey['i'].size(); ++i) {
+					if ((iter - 7)->getNum() == letterToKey['i'][i] && !(iter - 7)->getUsed()) {
+						for (int j = 0; j < letterToKey['l'].size(); ++j) {
+							if (((iter - 5)->getNum() == letterToKey['l'][j]) && !(iter - 5)->getUsed()) {
+								for (int k = 0; k < letterToKey['s'].size(); ++k) {
+									if (((iter)->getNum() == letterToKey['s'][k]) && !(iter)->getUsed()) {
+										decryptWord(iter, letterToKey, "violators");
+									}
+								}
+							}
+						}
+					}
+				}
+
+			}
+
+			printLetterKey(letterToKey);
 
 			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
 				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
@@ -612,6 +656,8 @@ vector<Key> guessPlainTextTwo(string ct)
 				}
 				continue;
 			}
+
+			//			checkWord(tokens, letterToKey, "violators", 'l', -5, 's', 0);
 
 			checkWord(tokens, letterToKey, "travestied", 'v', -6, 's', -4);
 
@@ -625,9 +671,6 @@ vector<Key> guessPlainTextTwo(string ct)
 				}
 				continue;
 			}
-
-
-
 			checkWord(tokens, letterToKey, "dextrins", 'r', -3, 's', 0);
 
 			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
@@ -640,8 +683,7 @@ vector<Key> guessPlainTextTwo(string ct)
 				}
 				continue;
 			}
-
-			checkWord(tokens, letterToKey, "expatiations", 'x', -10, 'p', -9);
+			checkWord(tokens, letterToKey, "expatiations", 'x', -10, 'e', -11);
 
 			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
 				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
@@ -666,7 +708,6 @@ vector<Key> guessPlainTextTwo(string ct)
 				}
 				continue;
 			}
-
 
 
 			checkWord(tokens, letterToKey, "maturates", 'm', -8, 'r', -4);
@@ -694,6 +735,7 @@ vector<Key> guessPlainTextTwo(string ct)
 				}
 				continue;
 			}
+
 			checkWord(tokens, letterToKey, "finale", 'a', -2, 'n', -3);
 			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
 				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
@@ -745,7 +787,6 @@ vector<Key> guessPlainTextTwo(string ct)
 				}
 				continue;
 			}
-
 			checkWord(tokens, letterToKey, "cottoned", 't', -5, 't', -4);
 
 			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
@@ -785,7 +826,7 @@ vector<Key> guessPlainTextTwo(string ct)
 				continue;
 			}
 
-			checkWord(tokens, letterToKey, "violators", 'i', -7, 'o', -6);
+			checkWord(tokens, letterToKey, "violators", 'i', -7, 'v', -8);
 
 			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
 				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
@@ -810,21 +851,7 @@ vector<Key> guessPlainTextTwo(string ct)
 				}
 				continue;
 			}
-
 			checkWord(tokens, letterToKey, "sampling", 's', -7, 'a', -6);
-
-			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
-				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
-					vi->setLetter(' ');
-					vi->setUsed(false);
-				}
-				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
-					mi->second.clear();
-				}
-				continue;
-			}
-
-			checkWord(tokens, letterToKey, "hope", 'p', -1, 'e', 0);
 
 			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
 				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
@@ -850,22 +877,7 @@ vector<Key> guessPlainTextTwo(string ct)
 				continue;
 			}
 
-			for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end() - 10; ++vi) {
-				if (vi->getLetter() == ' ' && (vi + 1)->getLetter() == ' ') {
-					(vi + 1)->setLetter('f');
-					(vi + 2)->setLetter('r');
-					(vi + 3)->setLetter('e');
-					(vi + 4)->setLetter('e');
-					(vi + 5)->setLetter('l');
-					(vi + 6)->setLetter('a');
-					(vi + 7)->setLetter('n');
-					(vi + 8)->setLetter('c');
-					(vi + 9)->setLetter('i');
-					(vi + 10)->setLetter('n');
-					(vi + 11)->setLetter('g');
-
-				}
-			}
+			checkWord(tokens, letterToKey, "stovepipes", 'p', -4, 'p', -2);
 
 			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
 				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
@@ -878,11 +890,33 @@ vector<Key> guessPlainTextTwo(string ct)
 				continue;
 			}
 
+			checkWord(tokens, letterToKey, "expatiations", 'x', -10, 'e', -11);
+
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
+
+			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
+				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
+					vi->setLetter(' ');
+					vi->setUsed(false);
+				}
+				for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
+					mi->second.clear();
+				}
+				continue;
+			}
 			return tokens;
 		}
 	}
 }
-
 
 int main(int argc, char* argv[])
 {
