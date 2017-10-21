@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -12,7 +12,7 @@ using namespace std;
 // Plain Text Dictionary for Test1    
 string pt[] = { "dipped ligatured cannier cohabitation cuddling coiffeuses pursuance roper eternizes nullo framable paddlings femur bebop demonstrational tuberculoid theocracy women reappraise oblongatae aphasias loftiness consumptive lip neurasthenically dutchmen grift discredited resourcefulness malfeasants swallowed jogger sayable lewder editorials demimondaine tzaritza arrogations wish indisputable reproduces hygrometries gamuts alight borderlines draggle reconsolidated anemometer rowels staggerers grands nu",
 "rereads predestines equippers cavitation bimolecular lucubrations cabin bettas quiverer prussians cosigner dressier bended dethronement inveigled davenport establish ganges rebroadcast supered bastiles willable abetted motionlessness demonic flatter bunyan securely tippiest tongue aw cotyledonal roomettes underlies miffs inducement overintellectually fertilize spasmodic bacchanal birdbrains decoct snakebite galliard boson headmistress unextended provence weakling pirana fiend lairds argils comma",
-"trawling responsiveness tastiest pulsed restamps telescoping pneuma lampoonist divas theosophists pustules checkrowed compactor conditionals envy hairball footslogs wasteful conjures deadfall stagnantly procure barked balmier bowery vagary beaten capitalized undersized towpath envisages thermoplastic rationalizers professions workbench underarm trudger icicled incisive oilbirds citrins chambrays ungainliness weazands prehardened dims determinants fishskin cleanable henceforward misarranges fine",
+"trawling responsiveness tastiest pulsed restamps telescoping pneuma lampoonist divas theosophists pustules checkrowed compactor conditionals envy hairball footslogs wasteful conjures deadfall stagnantly procure barked balmier bowery vagary beaten capitalized undersized towpath envisages thermoplastic rationalizers professions workbench underarm trudger icicled incisive oilbirds citrins chambrays ungainliness weazands prehardened dims determinants fishskin cleanable henceforward misarranges fine ",
 "dean iller playbooks resource anesthetic credibilities nonplus tzetzes incursions stooged envelopments girdling risibility thrum repeaters catheterizing misbestowed cursing malingerers ensconces lippiest accost superannuate slush opinionated rememberer councils mishandling drivels juryless slashers tangent roistering scathing apprenticing fleabite sault achier quantize registrable nobbler sheaf natantly kashmirs dittoes scanned emissivity iodize dually refunded portliest setbacks eureka needines",
 "mammate punners octette asylum nonclinically trotters slant collocation cardiology enchants ledge deregulated bottommost capsulate biotechnologies subtended cloddiest training joneses catafalque fieldmice hostels affect shrimper differentiations metacarpus amebas sweeter shiatsu oncoming tubeless menu professing apostatizing moreover eumorphic casked euphemistically programmability campaniles chickpea inactivates crossing defoggers reassures tableland doze reassembled striate precocious noncomba"
 };
@@ -37,22 +37,17 @@ bool checkFirstPT(vector<int> tokens)
 		//Condition of j is 1
 		if (countVal(tokens, tokens[304]) == 1)
 		{
+			//condition of q is that should occur 0 times
+			
+			//condition for v is it should occour at 215
 
-
-			//condition of q is that should occur only once
-			if (1)
+			if (countVal(tokens, tokens[215]) == 1)
 			{
-				//condition for v is it should occour at 215
-
-				if (countVal(tokens, tokens[215]) == 1)
-				{
-					//condition for z is it occurs at 80,351,356 and  std::count is 3
-					int idxZ = tokens[80];
-					if (idxZ == tokens[351] && idxZ == tokens[356] && countVal(tokens, idxZ) == 3)
-						return 1;
-				}
+				//condition for z is it occurs at 80,351,356 and  std::count is 3
+				int idxZ = tokens[80];
+				if (idxZ == tokens[351] && idxZ == tokens[356] && countVal(tokens, idxZ) == 3)
+					return 1;
 			}
-
 		}
 
 	}
@@ -66,8 +61,10 @@ bool checkSecondPT(vector<int> tokens)
 	int idxB = tokens[41];
 	for(size_t i=0;i<sizeof(idxArrB)/sizeof(idxArrB[0]);i++)
 	{
-		if (!(idxB == tokens[i]))
+		if (idxB != tokens[idxArrB[i]])
+		{
 			return 0;
+		}
 	}
 	if (countVal(tokens, idxB) == 16)
 	{
@@ -75,7 +72,6 @@ bool checkSecondPT(vector<int> tokens)
 		int idxK = tokens[404];
 		if (idxK == tokens[462] && countVal(tokens, idxK) == 2)
 		{
-
 			//condtion of q is that it should occur 21,79
 			int idxQ = tokens[21];
 			if (idxQ == tokens[79] && countVal(tokens, idxK) == 2)
@@ -85,8 +81,10 @@ bool checkSecondPT(vector<int> tokens)
 				int idxV = tokens[32];
 				for (size_t i = 0; i<sizeof(idxArrV) / sizeof(idxArrV[0]); i++)
 				{
-					if (!(idxV == tokens[i]))
+					if (idxV != tokens[idxArrV[i]])
+					{
 						return 0;
+					}
 				}
 				if (countVal(tokens, idxV) == 6)
 				{
@@ -115,16 +113,17 @@ bool checkThirdPT(vector<int> tokens)
 	int idxB = tokens[150];
 	for (size_t i = 0; i<sizeof(idxArrB) / sizeof(idxArrB[0]); i++)
 	{
-		if (!(idxB == tokens[i]))
+		if (idxB != tokens[idxArrB[i]])
+		{
 			return 0;
+		}	
 	}
 	if (countVal(tokens, idxB) == 9)
 	{
 		//condition of k is it should occour at 111, 214, 331, 456
 		int idxK = tokens[214];
-		if (idxK == tokens[111]  && idxK == tokens[331] && idxK == tokens[331] && countVal(tokens, idxK) == 4 )
+		if (idxK == tokens[111]  && idxK == tokens[331] && idxK == tokens[456] && countVal(tokens, idxK) == 4 )
 		{
-
 			//condtion of j is that it should occur 177
 			if (countVal(tokens, tokens[177]) == 1)
 			{
@@ -133,8 +132,10 @@ bool checkThirdPT(vector<int> tokens)
 				int idxV = tokens[17];
 				for (size_t i = 0; i<sizeof(idxArrV) / sizeof(idxArrV[0]); i++)
 				{
-					if (!(idxV == tokens[i]))
+					if (idxV != tokens[idxArrV[i]])
+					{
 						return 0;
+					}
 				}
 				if (countVal(tokens, idxV) == 6)
 				{
@@ -145,7 +146,9 @@ bool checkThirdPT(vector<int> tokens)
 						//condition of z is it should occur 255, 266, 311, 415
 						int idxZ = tokens[255];
 						if (idxZ == tokens[266] && idxZ == tokens[311] && idxZ == tokens[415] && countVal(tokens, idxZ) == 4)
+						{
 							return 1;
+						}
 					}
 
 				}
@@ -163,8 +166,10 @@ bool checkFourthPT(vector<int> tokens)
 	int idxB = tokens[15];
 	for (size_t i = 0; i<sizeof(idxArrB) / sizeof(idxArrB[0]); i++)
 	{
-		if (!(idxB == tokens[i]))
+		if (idxB != tokens[idxArrB[i]])
+		{
 			return 0;
+		}	
 	}
 	if (countVal(tokens, idxB) == 10)
 	{
@@ -172,19 +177,20 @@ bool checkFourthPT(vector<int> tokens)
 		int idxK = tokens[407];
 		if (idxK == tokens[18] && idxK == tokens[482] && idxK == tokens[489] && countVal(tokens, idxK) == 4)
 		{
-
 			//condtion of q is that it should never occur
 			if (1)
 			{
 				//condtion of v is it should occur at 17, 81, 143, 233, 280, 369
-				int idxArrV[] = { 81, 143, 233, 280, 369 };
-				int idxV = tokens[17];
+				int idxArrV[] = { 277,438 };
+				int idxV = tokens[92];
 				for (size_t i = 0; i<sizeof(idxArrV) / sizeof(idxArrV[0]); i++)
 				{
-					if (!(idxV == tokens[i]))
+					if (idxV != tokens[idxArrV[i]])
+					{
 						return 0;
+					}
 				}
-				if (countVal(tokens, idxV) == 6)
+				if (countVal(tokens, idxV) == 3)
 				{
 					//condition of j is it should occur 282
 
@@ -195,11 +201,15 @@ bool checkFourthPT(vector<int> tokens)
 						int idxZ = tokens[64];
 						for (size_t i = 0; i<sizeof(idxArrZ) / sizeof(idxArrZ[0]); i++)
 						{
-							if (!(idxZ == tokens[i]))
+							if (idxZ != tokens[idxArrZ[i]])
+							{
 								return 0;
+							}
 						}
 						if (countVal(tokens, idxZ) == 5)
-							return 1;
+							{
+								return 1;
+							}
 					}
 
 				}
@@ -217,8 +227,10 @@ bool checkFifthPT(vector<int> tokens)
 	int idxB = tokens[110];
 	for (size_t i = 0; i<sizeof(idxArrB) / sizeof(idxArrB[0]); i++)
 	{
-		if (!(idxB == tokens[i]))
+		if (idxB != tokens[idxArrB[i]])
+		{
 			return 0;
+		}
 	}
 	if (countVal(tokens, idxB) == 9)
 	{
@@ -226,17 +238,18 @@ bool checkFifthPT(vector<int> tokens)
 		int idxK = tokens[400];
 		if (idxK == tokens[349] && countVal(tokens, idxK) == 2)
 		{
-
 			//condtion of q is that it should occur 191
 			if (countVal(tokens, tokens[191]) == 1)
 			{
 				//condtion of v is it should occur at 332, 441
-				int idxArrV[] = { 441 };
+				int idxArrV[] = { 411 };
 				int idxV = tokens[332];
 				for (size_t i = 0; i<sizeof(idxArrV) / sizeof(idxArrV[0]); i++)
 				{
-					if (!(idxV == tokens[i]))
+					if (idxV != tokens[idxArrV[i]])
+					{
 						return 0;
+					}
 				}
 				if (countVal(tokens, idxV) == 2)
 				{
@@ -245,7 +258,7 @@ bool checkFifthPT(vector<int> tokens)
 					if (countVal(tokens, tokens[176]) == 1)
 					{
 						//condition of z is it should occur 332, 458
-						int idxZ = tokens[332];
+						int idxZ = tokens[322];
 						if (idxZ == tokens[458] && countVal(tokens, idxZ) == 2)
 							return 1;
 					}
@@ -389,25 +402,25 @@ void checkWord(vector<Key>& vk, map<char, vector<int>>& letterToKey, const strin
 
 void printTokensNum(vector<Key>& tokens) {
 	for (vector<Key>::iterator iter = tokens.begin(); iter != tokens.end(); ++iter) {
-		cout << iter->getNum() << ",";
+		//cout << iter->getNum() << ",";
 	}
 }
 
 void printTokensLetter(vector<Key>& tokens) {
 	for (vector<Key>::iterator iter = tokens.begin(); iter != tokens.end(); ++iter) {
-		cout << iter->getNum() << ",";
+		//cout << iter->getNum() << ",";
 	}
 }
 
 void printLetterKeys(map<char, vector<int>>& letterToKey) {
 	for (map<char, vector<int>>::iterator mi = letterToKey.begin(); mi != letterToKey.end(); ++mi) {
-		cout << endl << "Keys for letter " << mi->first << ": ";
+		//cout << endl << "Keys for letter " << mi->first << ": ";
 		sort(mi->second.begin(), mi->second.end());
 		for (int j = 0; j < mi->second.size(); ++j) {
-			cout << mi->second[j] << " ";
+			//cout << mi->second[j] << " ";
 		}
 	}
-	cout << endl;
+	//cout << endl;
 }
 
 
@@ -534,47 +547,57 @@ vector<Key> guessPlainTextTwo(string ct)
 int main(int argc, char* argv[])
 {
 
-	if(argc != 2)
+	if(argc != 3)
 	{
-		cout<< "usage: "<<argv[0] <<" <filename>\n";
-		return 1;
+		cout<< "usage: "<<argv[0] <<" <1 or 2> <filename>\n";
+		exit(1);
 	}	
+	
+	stringstream strVal(argv[1]);
+	int test12;
+	strVal >> test12;
+	if(test12 != 1 && test12 != 2)
+	{
+		cout<< "Enter only 1 or 2\n";
+		exit(1);
+	}
+
 	ifstream inFile ;
-	inFile.open(argv[1]);
+	inFile.open(argv[2]);
 	string ct,s;
-	//cout<<"Enter Cipher Text: ";
 	if(!inFile.is_open())
+	{
 		cout<<"Could not open file\n";
+		exit(1);
+	}
 	else
 	{
 		while(inFile >> s)
 			ct += s;
 	}
 	
-	int idx_pt = guessPlainTextOne(ct);
-	cout<<idx_pt;
-	if(idx_pt != -1)
-		cout<<"My Plain test guess is:\n"<<pt[idx_pt]<<endl;
-	else
-		cout<<"Something is wrong."<<endl;
-
-	return 0;
-	
-		
-	//ofstream file;
-	string ct;
-	cout << "Enter Cipher Text: ";
-	cin >> ct;
-	cout << "\n\n\n";
-	vector<Key> decrypted_keys = guessPlainTextTwo(ct);
-
-	int i = 0;
-
-	cout << endl << "Printing letters" << endl;
-	for (vector<Key>::iterator iter = decrypted_keys.begin(); iter != decrypted_keys.end(); ++iter) {
-		cout << iter->getLetter();
+	if(test12 == 1)
+	{
+		cout<<"Test 1:"<<endl;
+		int idx_pt = guessPlainTextOne(ct);
+		if(idx_pt != -1)
+			cout<<"My Plain test guess is:\n"<<pt[idx_pt]<<endl;
+		else
+			cout<<"Something is wrong."<<endl;
 	}
-	cout << endl;
+	else
+	{
+		cout <<"Test 2:"<< endl;
+		vector<Key> decrypted_keys = guessPlainTextTwo(ct);
 
+		cout << "Decrypting Message: " << endl;
+		for (vector<Key>::iterator iter = decrypted_keys.begin(); iter != decrypted_keys.end(); ++iter) {
+			cout << iter->getLetter();
+		}
+	}
+
+	
+	
+	return 0;
 
 }
