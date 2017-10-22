@@ -644,7 +644,7 @@ vector<Key> guessPlainTextTwo(string ct)
 
 			}
 
-			printLetterKey(letterToKey);
+			//printLetterKey(letterToKey);
 
 			if (sanityCheck(letterToKey, tokens) && (i) != popu_keys.end() - 1) {
 				for (vector<Key>::iterator vi = tokens.begin(); vi != tokens.end(); ++vi) {
@@ -968,6 +968,7 @@ int main(int argc, char* argv[])
 		for (vector<Key>::iterator iter = decrypted_keys.begin(); iter != decrypted_keys.end(); ++iter) {
 			cout << iter->getLetter();
 		}
+		cout<<endl;
 	}
 
 	
